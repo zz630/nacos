@@ -57,6 +57,14 @@ public interface Mapper {
     String delete(List<String> params);
     
     /**
+     * The count method contains where params.
+     *
+     * @param where The where params
+     * @return The sql of count
+     */
+    String count(List<String> where);
+    
+    /**
      * Get the name of table.
      * @return The name of table.
      */
@@ -67,4 +75,12 @@ public interface Mapper {
      * @return The name of datasource.
      */
     String getDataSource();
+    
+    /**
+     * Get config_info table primary keys name.
+     * The old default value: Statement.RETURN_GENERATED_KEYS
+     * The new default value: new String[]{"id"}
+     * @return an array of column names indicating the columns
+     */
+    String[] getPrimaryKeyGeneratedKeys();
 }

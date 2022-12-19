@@ -48,15 +48,6 @@ public interface ConfigInfoAggrMapper extends Mapper {
     String aggrConfigInfoCount(int size, boolean isIn);
     
     /**
-     * Get count of aggregation config info.
-     * The default sql:
-     * SELECT count(*) FROM config_info_aggr WHERE data_id = ? AND group_id = ? AND tenant_id = ?
-     *
-     * @return The count of getting count of aggregation config info.
-     */
-    String aggrConfigInfoCount();
-    
-    /**
      * Find all data before aggregation under a dataId. It is guaranteed not to return NULL.
      * The default sql:
      * SELECT data_id,group_id,tenant_id,datum_id,app_name,content
@@ -64,13 +55,13 @@ public interface ConfigInfoAggrMapper extends Mapper {
      *
      * @return The sql of finding all data before aggregation under a dataId.
      */
-    String findConfigInfoAggr();
+    String findConfigInfoAggrIsOrdered();
     
     /**
      * Query aggregation config info.
      * The default sql:
      * SELECT data_id,group_id,tenant_id,datum_id,app_name,content FROM config_info_aggr WHERE data_id=? AND
-     * group_id=? AND tenant_id=? ORDER BY datum_id LIMIT ?,?
+     * group_id=? AND tenant_id=? ORDER BY datum_id LIMIT startRow,pageSize
      *
      * @param startRow The start index.
      * @param pageSize The size of page.
@@ -85,5 +76,5 @@ public interface ConfigInfoAggrMapper extends Mapper {
      *
      * @return The sql of finding all aggregated data sets.
      */
-    String findAllAggrGroup();
+    String findAllAggrGroupByDistinct();
 }

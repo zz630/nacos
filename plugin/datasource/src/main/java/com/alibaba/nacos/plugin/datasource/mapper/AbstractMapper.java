@@ -39,7 +39,7 @@ public abstract class AbstractMapper implements Mapper {
                 sql.append(",");
             }
         }
-        sql.append(" FROM ");
+        sql.append("FROM ");
         sql.append(getTableName());
         sql.append(" ");
         
@@ -104,7 +104,7 @@ public abstract class AbstractMapper implements Mapper {
             return sql.toString();
         }
         
-        sql.append("WHERE ");
+        sql.append(" WHERE ");
         
         for (int i = 0; i < where.size(); i++) {
             sql.append(where.get(i)).append(" = ").append("?");
@@ -119,7 +119,7 @@ public abstract class AbstractMapper implements Mapper {
     public String delete(List<String> params) {
         StringBuilder sql = new StringBuilder();
         String method = "DELETE ";
-        sql.append(method).append(" FROM ").append(getTableName()).append(" ").append("WHERE ");
+        sql.append(method).append("FROM ").append(getTableName()).append(" ").append("WHERE ");
         for (int i = 0; i < params.size(); i++) {
             sql.append(params.get(i)).append(" ").append("=").append(" ? ");
             if (i != params.size() - 1) {
@@ -128,5 +128,33 @@ public abstract class AbstractMapper implements Mapper {
         }
         
         return sql.toString();
+    }
+    
+    @Override
+    public String count(List<String> where) {
+        StringBuilder sql = new StringBuilder();
+        String method = "SELECT ";
+        sql.append(method);
+        sql.append("COUNT(*) FROM ");
+        sql.append(getTableName());
+        sql.append(" ");
+        
+        if (null == where || where.size() == 0) {
+            return sql.toString();
+        }
+        
+        sql.append("WHERE ");
+        for (int i = 0; i < where.size(); i++) {
+            sql.append(where.get(i)).append(" = ").append("?");
+            if (i != where.size() - 1) {
+                sql.append(" AND ");
+            }
+        }
+        return sql.toString();
+    }
+    
+    @Override
+    public String[] getPrimaryKeyGeneratedKeys() {
+        return new String[]{"id"};
     }
 }

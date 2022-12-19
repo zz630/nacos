@@ -39,13 +39,13 @@ public class ConfigInfoAggrMapperByDerby extends AbstractMapper implements Confi
         }
         datumString.deleteCharAt(datumString.length() - 1);
         return "DELETE FROM config_info_aggr WHERE data_id = ? AND group_id = ? AND tenant_id = ? AND datum_id IN ("
-                + datumString.toString() + ")";
+                + datumString + ")";
     }
     
     @Override
     public String aggrConfigInfoCount(int size, boolean isIn) {
         StringBuilder sql = new StringBuilder(
-                " SELECT count(*) FROM config_info_aggr WHERE data_id = ? AND group_id = ? AND tenant_id = ? AND datum_id");
+                "SELECT count(*) FROM config_info_aggr WHERE data_id = ? AND group_id = ? AND tenant_id = ? AND datum_id");
         if (isIn) {
             sql.append(" IN (");
         } else {
@@ -58,17 +58,12 @@ public class ConfigInfoAggrMapperByDerby extends AbstractMapper implements Confi
             sql.append('?');
         }
         sql.append(')');
-    
+        
         return sql.toString();
     }
     
     @Override
-    public String aggrConfigInfoCount() {
-        return " SELECT count(*) FROM config_info_aggr WHERE data_id = ? AND group_id = ? AND tenant_id = ?";
-    }
-    
-    @Override
-    public String findConfigInfoAggr() {
+    public String findConfigInfoAggrIsOrdered() {
         return "SELECT data_id,group_id,tenant_id,datum_id,app_name,content FROM config_info_aggr WHERE data_id = ? AND "
                 + "group_id = ? AND tenant_id = ? ORDER BY datum_id";
     }
@@ -76,11 +71,12 @@ public class ConfigInfoAggrMapperByDerby extends AbstractMapper implements Confi
     @Override
     public String findConfigInfoAggrByPageFetchRows(int startRow, int pageSize) {
         return "SELECT data_id,group_id,tenant_id,datum_id,app_name,content FROM config_info_aggr WHERE data_id=? AND "
-                + "group_id=? AND tenant_id=? ORDER BY datum_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+                + "group_id=? AND tenant_id=? ORDER BY datum_id OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize
+                + " ROWS ONLY";
     }
     
     @Override
-    public String findAllAggrGroup() {
+    public String findAllAggrGroupByDistinct() {
         return "SELECT DISTINCT data_id, group_id, tenant_id FROM config_info_aggr";
     }
     
